@@ -1,1 +1,70 @@
-/* You can add global styles to this file, and also import other style files */
+* { box-sizing: border-box; }
+
+:root {
+  --azul: #1d3557;
+  --azul-claro: #e8eef6;
+  --naranja: #e76f24;
+  --texto: #1f2933;
+  --gris: #64748b;
+  --borde: #d5dde6;
+  --fondo: #f2f5f9;
+  --rojo: #b42318;
+  --verde: #17653a;
+}
+
+body {
+  margin: 0;
+  color: var(--texto);
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  font-size: 15px;
+  background: var(--fondo);
+}
+
+button, input, select, textarea { font: inherit; }
+h2 { margin: 0; color: var(--azul); }
+h3 { color: var(--azul); }
+
+.page { max-width: 1180px; margin: 0 auto; }
+.page-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+.card { padding: 24px; background: #fff; border: 1px solid var(--borde); border-radius: 8px; box-shadow: 0 6px 18px rgb(29 53 87 / 6%); }
+.eyebrow { margin: 0 0 6px; color: var(--naranja); font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+
+.filtros { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; margin-bottom: 16px; }
+.filtros .campo { min-width: 170px; margin: 0; }
+
+.campo { display: grid; gap: 4px; margin-bottom: 14px; }
+.campo label { font-size: 13px; font-weight: 600; color: var(--azul); }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+.input { width: 100%; padding: 9px 11px; border: 1px solid #c3cdd8; border-radius: 5px; color: inherit; background: #fff; }
+.input:focus { outline: 2px solid rgb(231 111 36 / 35%); border-color: var(--naranja); }
+.input.ng-invalid.ng-touched { border-color: var(--rojo); }
+.error { color: var(--rojo); font-size: 13px; }
+.check { display: flex; align-items: center; gap: 8px; }
+
+.btn { display: inline-block; padding: 8px 14px; border: 1px solid #c3cdd8; border-radius: 5px; color: var(--texto); background: #fff; text-decoration: none; cursor: pointer; white-space: nowrap; }
+.btn:hover { background: var(--azul-claro); }
+.btn-primary { border-color: var(--azul); color: #fff; background: var(--azul); }
+.btn-primary:hover { background: #142640; }
+.btn-peligro { border-color: var(--rojo); color: var(--rojo); }
+.btn-sm { padding: 4px 10px; font-size: 13px; }
+.btn:disabled { opacity: .55; cursor: not-allowed; }
+.acciones { display: flex; flex-wrap: wrap; gap: 6px; }
+.acciones-form { display: flex; justify-content: flex-end; gap: 8px; margin-top: 8px; }
+
+.alerta { margin-bottom: 16px; padding: 12px 16px; border-radius: 5px; color: #9f2118; background: #fff0ee; border: 1px solid #f6c9c3; }
+.alerta.exito { color: var(--verde); background: #e7f8ee; border-color: #b6e4c8; }
+.estado { padding: 22px; color: var(--gris); text-align: center; }
+
+.tabla { width: 100%; border-collapse: collapse; background: #fff; }
+.tabla th { padding: 10px 12px; color: #fff; text-align: left; background: var(--azul); font-weight: 600; }
+.tabla td { padding: 10px 12px; border-bottom: 1px solid #e3e9ef; }
+.tabla .num { text-align: right; white-space: nowrap; }
+.badge { padding: 3px 10px; border-radius: 999px; color: var(--verde); background: #dcfce7; font-size: 12px; font-weight: 600; }
+.badge.apagado { color: var(--gris); background: #edf1f5; }
+.badge.anulada { color: var(--rojo); background: #fde8e6; }
+
+@media (max-width: 700px) {
+  .page-header { align-items: flex-start; flex-direction: column; }
+  .grid-2 { grid-template-columns: 1fr; }
+  .tabla { display: block; overflow-x: auto; white-space: nowrap; }
+}
