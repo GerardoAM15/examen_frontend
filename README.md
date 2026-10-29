@@ -1,59 +1,76 @@
-# AutoandesFrontend
+# AutoAndes Web
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.0.
+SPA en Angular 22 (componentes standalone) para las órdenes de servicio del taller AutoAndes. Consume AutoAndes API (`autoandes-backend`).
 
-## Development server
+## Ejecución
 
-To start a local development server, run:
+1. Levantar el backend (`autoandes-backend`); en el perfil `dev` escucha en `http://localhost:8081`.
+2. Instalar dependencias y levantar la SPA:
 
 ```bash
+npm install
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+3. Abrir `http://localhost:4200`.
 
-## Code scaffolding
+La URL de la API se configura en `src/environments/environment.ts` (`apiUrl`).
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Usuarios de prueba
 
-```bash
-ng generate component component-name
+| Usuario  | Contraseña | Rol         | Estado   |
+|----------|------------|-------------|----------|
+| admin    | Auto2026*  | ADMIN       | Activo   |
+| asesor   | Auto2026*  | ASESOR      | Activo   |
+| jefe     | Auto2026*  | JEFE_TALLER | Activo   |
+| inactivo | Auto2026*  | ASESOR      | Inactivo |
+
+## Estructura
+
+```
+src/app/
+├── core/       auth/ (modelos y AuthService con signals), guards/, interceptors/,
+│               config/menu.ts, models/, services/ (un servicio HTTP por recurso), utils/
+├── shared/     directives/si-permiso, pages/acceso-denegado, pages/no-encontrado
+├── layout/     main-layout, header, sidebar
+└── features/   auth/login, inicio, servicios, vehiculos, ordenes, reportes
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Rutas y permisos
 
-```bash
-ng generate --help
-```
+| Ruta                    | Guard                     | Permiso           |
+|-------------------------|---------------------------|-------------------|
+| /login                  | invitadoGuard             | Público           |
+| /inicio                 | authGuard                 | Autenticado       |
+| /servicios              | authGuard + permisoGuard  | SERVICIO_LEER     |
+| /servicios/nuevo, /servicios/:id/editar | authGuard + permisoGuard | SERVICIO_ESCRIBIR |
+| /vehiculos              | authGuard + permisoGuard  | VEHICULO_LEER     |
+| /vehiculos/nuevo, /vehiculos/:id/editar | authGuard + permisoGuard | VEHICULO_ESCRIBIR |
+| /ordenes, /ordenes/:id  | authGuard + permisoGuard  | ORDEN_LEER        |
+| /ordenes/nueva          | authGuard + permisoGuard  | ORDEN_REGISTRAR   |
+| /reportes               | authGuard + permisoGuard  | REPORTE_VER       |
 
-## Building
+Sin permiso se muestra «Acceso denegado» y la sesión continúa. Ocultar menú y botones es solo experiencia de usuario: el backend responde 403 de todas formas.
 
-To build the project run:
+## Seguridad
 
-```bash
-ng build
-```
+- **Sesión**: `AuthService` guarda token, permisos y vencimiento en `sessionStorage` y en un signal; cierra la sesión automáticamente al vencer el token.
+- **authInterceptor**: agrega `Authorization: Bearer` solo a las peticiones dirigidas a `apiUrl`.
+- **errorInterceptor**: ante un 401 (excepto el del login) cierra la sesión y vuelve a `/login?returnUrl=...`; un 403 no cierra la sesión.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Contrato de la API consumido (bajo /api/v1)
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+| Verbo            | Ruta                                              |
+|------------------|---------------------------------------------------|
+| POST             | /auth/login                                       |
+| GET              | /clientes                                         |
+| GET · POST       | /servicios                                        |
+| GET · PUT · DELETE | /servicios/{id}                                 |
+| PATCH            | /servicios/{id}/estado                            |
+| GET · POST       | /vehiculos?clienteId                              |
+| GET · PUT · DELETE | /vehiculos/{id}                                 |
+| POST             | /ordenes                                          |
+| GET              | /ordenes?placa&estado&desde&hasta                 |
+| GET              | /ordenes/{id}                                     |
+| PATCH            | /ordenes/{id}/anular                              |
+| GET              | /reportes/ingresos-por-servicio?desde&hasta       |
