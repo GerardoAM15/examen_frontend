@@ -8,6 +8,8 @@ export const routes: Routes = [
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'inicio' },
       { path: 'inicio', title: 'Inicio', loadComponent: () => import('./features/inicio/inicio').then(m => m.Inicio) },
+      { path: 'servicios', loadChildren: () => import('./features/servicios/servicios.routes').then(m => m.SERVICIOS_ROUTES) },
+      { path: 'vehiculos', loadChildren: () => import('./features/vehiculos/vehiculos.routes').then(m => m.VEHICULOS_ROUTES) },
     ],
   },
   { path: '**', title: 'Página no encontrada', loadComponent: () => import('./shared/pages/no-encontrado/no-encontrado').then(m => m.NoEncontrado) },
