@@ -18,12 +18,12 @@ La URL de la API se configura en `src/environments/environment.ts` (`apiUrl`).
 
 ## Usuarios de prueba
 
-| Usuario  | Contraseña | Rol         | Estado   |
-|----------|------------|-------------|----------|
-| admin    | Auto2026*  | ADMIN       | Activo   |
-| asesor   | Auto2026*  | ASESOR      | Activo   |
-| jefe     | Auto2026*  | JEFE_TALLER | Activo   |
-| inactivo | Auto2026*  | ASESOR      | Inactivo |
+| Usuario  | Contraseña  | Rol         | Estado   |
+|----------|-------------|-------------|----------|
+| admin    | admin123    | ADMIN       | Activo   |
+| asesor   | asesor123   | ASESOR      | Activo   |
+| jefe     | jefe123     | JEFE_TALLER | Activo   |
+| inactivo | inactivo123 | ASESOR      | Inactivo |
 
 ## Estructura
 

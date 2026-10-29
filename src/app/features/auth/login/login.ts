@@ -25,7 +25,17 @@ import { mensajeError } from '../../../core/utils/http-error';
         </div>
         <div class="campo">
           <label for="password">Contraseña</label>
-          <input id="password" type="password" class="input" formControlName="password" autocomplete="current-password" />
+          <div class="clave">
+            <input id="password" [type]="verClave() ? 'text' : 'password'" class="input" formControlName="password" autocomplete="current-password" />
+            <button type="button" class="ojo" (click)="verClave.set(!verClave())"
+                    [attr.aria-label]="verClave() ? 'Ocultar contraseña' : 'Mostrar contraseña'" [attr.aria-pressed]="verClave()">
+              @if (verClave()) {
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" /><circle cx="12" cy="12" r="3" /><path d="M3 3l18 18" /></svg>
+              } @else {
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" /><circle cx="12" cy="12" r="3" /></svg>
+              }
+            </button>
+          </div>
           @if (form.controls.password.invalid && form.controls.password.touched) { <span class="error">Ingrese la contraseña.</span> }
         </div>
         <button type="submit" class="btn btn-primary ancho" [disabled]="enviando()">{{ enviando() ? 'Ingresando...' : 'Ingresar' }}</button>
@@ -37,6 +47,11 @@ import { mensajeError } from '../../../core/utils/http-error';
     .login { width: 100%; max-width: 380px; }
     .sub { margin: 4px 0 18px; color: var(--gris); }
     .ancho { width: 100%; padding: 10px; }
+    .clave { position: relative; }
+    .clave .input { padding-right: 42px; }
+    .ojo { position: absolute; top: 50%; right: 6px; display: grid; width: 32px; height: 32px; place-items: center; padding: 0; border: 0; border-radius: 5px; color: var(--gris); background: transparent; cursor: pointer; transform: translateY(-50%); }
+    .ojo:hover { color: var(--azul); background: var(--azul-claro); }
+    .ojo svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   `,
 })
 export class Login {
@@ -48,6 +63,7 @@ export class Login {
 
   protected readonly enviando = signal(false);
   protected readonly error = signal('');
+  protected readonly verClave = signal(false);
 
   protected readonly form = inject(FormBuilder).nonNullable.group({
     username: ['', Validators.required],
