@@ -43,14 +43,15 @@ import { mensajeError } from '../../../core/utils/http-error';
     </main>
   `,
   styles: `
-    .fondo { display: grid; min-height: 100vh; padding: 16px; place-items: center; background: linear-gradient(135deg, #1d3557, #2b4c7e); }
+    .fondo { display: grid; min-height: 100vh; padding: 16px; place-items: center; background: radial-gradient(circle at 20% 15%, var(--primario-suave), var(--primario) 60%); }
+    .login { border-top: 3px solid var(--acento); }
     .login { width: 100%; max-width: 380px; }
     .sub { margin: 4px 0 18px; color: var(--gris); }
     .ancho { width: 100%; padding: 10px; }
     .clave { position: relative; }
     .clave .input { padding-right: 42px; }
     .ojo { position: absolute; top: 50%; right: 6px; display: grid; width: 32px; height: 32px; place-items: center; padding: 0; border: 0; border-radius: 5px; color: var(--gris); background: transparent; cursor: pointer; transform: translateY(-50%); }
-    .ojo:hover { color: var(--azul); background: var(--azul-claro); }
+    .ojo:hover { color: var(--primario); background: var(--hover); }
     .ojo svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
   `,
 })
