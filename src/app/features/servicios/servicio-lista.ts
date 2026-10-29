@@ -4,16 +4,17 @@ import { DecimalPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Servicio } from '../../core/models/servicio';
 import { ServicioService } from '../../core/services/servicio.service';
+import { SiPermiso } from '../../shared/directives/si-permiso';
 import { mensajeError } from '../../core/utils/http-error';
 
 @Component({
   selector: 'app-servicio-lista',
-  imports: [RouterLink, DecimalPipe],
+  imports: [SiPermiso, RouterLink, DecimalPipe],
   template: `
     <section class="page">
       <div class="page-header">
         <div><p class="eyebrow">Catálogo</p><h2>Servicios</h2></div>
-        <a routerLink="nuevo" class="btn btn-primary">+ Nuevo servicio</a>
+        <a *siPermiso="'SERVICIO_ESCRIBIR'" routerLink="nuevo" class="btn btn-primary">+ Nuevo servicio</a>
       </div>
 
       @if (mensaje()) { <div class="alerta" [class.exito]="exito()">{{ mensaje() }}</div> }
@@ -44,7 +45,7 @@ import { mensajeError } from '../../core/utils/http-error';
                   <td class="num">{{ s.duracionMin }} min</td>
                   <td><span class="badge" [class.apagado]="!s.activo">{{ s.activo ? 'Activo' : 'De baja' }}</span></td>
                   <td>
-                    <div class="acciones">
+                    <div class="acciones" *siPermiso="'SERVICIO_ESCRIBIR'">
                       <a [routerLink]="[s.id, 'editar']" class="btn btn-sm">Editar</a>
                       <button class="btn btn-sm" (click)="cambiarEstado(s)">{{ s.activo ? 'Dar de baja' : 'Activar' }}</button>
                       <button class="btn btn-sm btn-peligro" (click)="eliminar(s)">Eliminar</button>

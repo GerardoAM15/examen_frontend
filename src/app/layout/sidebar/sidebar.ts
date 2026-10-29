@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MENU } from '../../core/config/menu';
+import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,8 +9,8 @@ import { MENU } from '../../core/config/menu';
   template: `
     <nav class="sidebar" aria-label="Módulos">
       <p class="titulo">Módulos</p>
-      @for (item of menu; track item.ruta) {
-        <a [routerLink]="item.ruta" routerLinkActive="activo"><span aria-hidden="true">{{ item.icono }}</span> {{ item.etiqueta }}</a>
+      @for (item of menu(); track item.ruta) {
+        <a [routerLink]="item.ruta" routerLinkActive="activo" [routerLinkActiveOptions]="{ exact: item.ruta === '/ordenes' }"><span aria-hidden="true">{{ item.icono }}</span> {{ item.etiqueta }}</a>
       }
     </nav>
   `,
@@ -23,5 +24,8 @@ import { MENU } from '../../core/config/menu';
   `,
 })
 export class Sidebar {
-  protected readonly menu = MENU;
+  private readonly auth = inject(AuthService);
+
+  // computed sobre el signal de la sesión: al cambiar de usuario el menú se recalcula sin recargar.
+  protected readonly menu = computed(() => MENU.filter(item => this.auth.tienePermiso(item.permiso)));
 }

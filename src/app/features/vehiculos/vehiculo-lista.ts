@@ -5,16 +5,17 @@ import { Cliente } from '../../core/models/cliente';
 import { Vehiculo } from '../../core/models/vehiculo';
 import { ClienteService } from '../../core/services/cliente.service';
 import { VehiculoService } from '../../core/services/vehiculo.service';
+import { SiPermiso } from '../../shared/directives/si-permiso';
 import { mensajeError } from '../../core/utils/http-error';
 
 @Component({
   selector: 'app-vehiculo-lista',
-  imports: [RouterLink],
+  imports: [SiPermiso, RouterLink],
   template: `
     <section class="page">
       <div class="page-header">
         <div><p class="eyebrow">Clientes</p><h2>Vehículos</h2></div>
-        <a routerLink="nuevo" class="btn btn-primary">+ Nuevo vehículo</a>
+        <a *siPermiso="'VEHICULO_ESCRIBIR'" routerLink="nuevo" class="btn btn-primary">+ Nuevo vehículo</a>
       </div>
 
       @if (mensaje()) { <div class="alerta" [class.exito]="exito()">{{ mensaje() }}</div> }
@@ -49,7 +50,7 @@ import { mensajeError } from '../../core/utils/http-error';
                   <td class="num">{{ v.anio }}</td>
                   <td>{{ v.clienteNombre }}</td>
                   <td>
-                    <div class="acciones">
+                    <div class="acciones" *siPermiso="'VEHICULO_ESCRIBIR'">
                       <a [routerLink]="[v.id, 'editar']" class="btn btn-sm">Editar</a>
                       <button class="btn btn-sm btn-peligro" (click)="eliminar(v)">Eliminar</button>
                     </div>
